@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 import csv
+
 'exec(%matplotlib inline)'
 from urllib.request import urlopen
 from urllib.error import HTTPError
@@ -34,10 +35,11 @@ def crawl_course_page(course_page_url):
                 authors += name.text + ','
 
         with open(r'courses.csv', 'a', newline='') as csvfile:
-            fieldnames = ['title', 'authors', 'ratings', 'description']
+            fieldnames = ['title', 'url', 'authors', 'ratings', 'description']
             writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
             writer.writerow({
                 'title': course_title,
+                'url': course_page_url,
                 'authors': authors,
                 'ratings': course_ratings,
                 'description': description
@@ -46,8 +48,7 @@ def crawl_course_page(course_page_url):
 
 def crawl_main_page(page_no):
     url = 'https://www.coursera.org/courses?languages=en&query=&indices[test_all_products][page]=' + str(
-        page_no) + '&indices[test_all_products][configure][clickAnalytics]=true&indices[test_all_products][configure][hitsPerPage]=' + str(
-        page_no) + '&configure[clickAnalytics]=true'
+        page_no) + '&indices[test_all_products][configure][clickAnalytics]=true&indices[test_all_products][configure][hitsPerPage]=10&configure[clickAnalytics]=true'
     print(url)
     html = urlopen(url)
 
